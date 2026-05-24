@@ -38,4 +38,4 @@ jobs:
 
       - name: Build extension
         run: |
-          ./gradlew :all:manhwa18cc:assembleRelease
+          ./gradlew :src:all:manhwa18cc:assembleRelease
