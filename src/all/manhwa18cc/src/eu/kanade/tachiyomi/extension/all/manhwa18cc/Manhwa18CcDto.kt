@@ -99,11 +99,3 @@ data class ChapterResponseDto(
     val prevChapter: String? = null,
     val nextChapter: String? = null,
 )
-
-// --- Genre List ---
-
-@Serializable
-data class GenresResponseDto(
-    val success: Boolean = false,
-    val genres: List<String> = emptyList(),
-)

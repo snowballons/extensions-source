@@ -159,28 +159,10 @@ abstract class Manhwa18Cc(override val lang: String) : HttpSource() {
 
     // --- Filters ---
 
-    private var cachedGenres: List<String> = emptyList()
-
     override fun getFilterList(): FilterList {
-        val header = if (cachedGenres.isEmpty()) {
-            Filter.Header("Press Reset to load genres, then reopen the filter")
-        } else {
-            Filter.Header("Filter by genre (leave query empty)")
-        }
-        val genres = listOf(GENRE_ALL) + cachedGenres
-        return FilterList(header, GenreFilter(genres))
+        val genres = listOf(GENRE_ALL) + GENRES
+        return FilterList(Filter.Header("Filter by genre (leave query empty)"), GenreFilter(genres))
     }
-
-    private fun fetchGenres() = client.newCall(GET("$apiUrl/genres", headers))
-        .execute()
-        .let { response ->
-            runCatching {
-                val dto = response.parseAs<GenresResponseDto>()
-                if (dto.success) {
-                    cachedGenres = dto.genres.map { it.replaceFirstChar(Char::titlecase) }
-                }
-            }
-        }
 
     // --- Private Helpers ---
 
@@ -220,6 +202,12 @@ abstract class Manhwa18Cc(override val lang: String) : HttpSource() {
     companion object {
         private const val GENRE_ALL = "All"
         private val DATE_FORMAT = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        private val GENRES = listOf(
+            "Action", "Adult", "Adventure", "Comedy", "Drama", "Ecchi", "Fantasy",
+            "Harem", "Hentai", "Historical", "Horror", "Isekai", "Martial Arts",
+            "Mature", "Psychological", "Romance", "School Life", "Seinen", "Shounen",
+            "Slice Of Life", "Smut", "Sports", "Supernatural", "Thriller", "Yaoi",
+        )
     }
 }
 
