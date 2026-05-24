@@ -111,19 +111,21 @@ jobs:
           path: main
           persist-credentials: false
 
-      - name: Install aapt
-        run: sudo apt-get update && sudo apt-get install -y aapt
-
       - name: Create repo artifacts
         run: |
           cd main
-          python ./.github/scripts/publish.py ~/apk-artifacts
+          VC=$(grep 'extVersionCode' src/all/manhwa18cc/build.gradle | grep -oP '\d+')
+          python ./.github/scripts/publish.py ~/apk-artifacts \
+            --pkg-name "eu.kanade.tachiyomi.extension.all.manhwa18cc" \
+            --app-label "Manhwa18.cc" \
+            --nsfw 1 \
+            --lang all \
+            --version-code "$VC" \
+            --version-name "1.4.$VC"
 
       - name: Checkout repo branch
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          repository: snowballons/extensions
-          token: ${{ secrets.PAT }}
           ref: repo
           path: repo
           persist-credentials: true
@@ -137,4 +139,4 @@ jobs:
           git add .
           git diff --staged --quiet || git commit -m "Update extensions repo"
           git push
-          curl -s https://purge.jsdelivr.net/gh/snowballons/extensions@repo/index.min.json
+          curl -s https://purge.jsdelivr.net/gh/snowballons/extensions-source@repo/index.min.json
