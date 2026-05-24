@@ -21,7 +21,7 @@ abstract class Manhwa18Cc(override val lang: String) : HttpSource() {
     override val baseUrl = "https://manhwa18.cc"
     override val supportsLatest = true
 
-    private val apiUrl = "https://man-api-psi.vercel.app/"
+    private val apiUrl = "https://man-api-psi.vercel.app/api"
 
     private val json = Json {
         ignoreUnknownKeys = true
